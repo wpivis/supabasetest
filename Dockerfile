@@ -19,4 +19,6 @@ RUN export VITE_BASE_PATH="$VITE_BASE_PATH" \
 FROM nginx:alpine
 EXPOSE 80
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY ./deploy/nginx.conf /etc/nginx/conf.d/default.conf
+# .conf.template is processed by the nginx entrypoint via envsubst at startup.
+# Railway injects PORT automatically; local/DigitalOcean Compose sets PORT=80 explicitly.
+COPY ./deploy/nginx.conf /etc/nginx/templates/default.conf.template
